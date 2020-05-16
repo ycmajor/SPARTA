@@ -1,0 +1,17 @@
+<html>
+ <head>
+  <script type="text/javascript">
+   $.ajax({
+    url: "//namu.wiki/raw/틀:틀%20모음/",
+    method: "GET",
+    dataType: "text",
+    success: function(data) {
+     $("#content").html(data);
+    }
+   })
+  </script>
+ </head>
+ <body>
+  <div id="content"></div>
+ </body>
+</html>
