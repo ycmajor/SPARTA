@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>HIKE SEOUL / 서울시 산책로 Finder</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Graduate&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script>
+        function q1() {
+            $('#names-q1').empty();
+            let input_gu = $('#gu_select option:selected').val();
+            let input_level = $('#level option:selected').val();
+            $.ajax({
+                type: "GET",
+                url: "http://openapi.seoul.go.kr:8088/586e4271536d726136337150507376/json/SeoulGilWalkCourse/1/1000",
+                data: {},
+                success: function (response) {
+                    let rows = response["SeoulGilWalkCourse"]["row"];
+                    for (let i = 0; i < rows.length; i++) {
+                        let gu_name_rawdata = rows[i]['AREA_GU'];
+                        let COURSE_LEVEL = rows[i]['COURSE_LEVEL'];
+
+                        if (gu_name_rawdata != input_gu) {
+                            continue;
+                        }
+                        if (COURSE_LEVEL != input_level) {
+                            continue;
+                        }
+
+                        let area_name = rows[i]['CPI_NAME'];
+                        let lead_time = rows[i]['LEAD_TIME'];
+                        let temp_html = `<tr>
+                                            <td class="text-black mb-4 text-center">${area_name}</td>
+                                            <td class="text-black mb-4 text-center">${lead_time}</td>
+                                            <td class="text-black mb-4 text-center">${COURSE_LEVEL}</td>
+                                        </tr>`
+                        $('#names-q1').append(temp_html);
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+
+<body id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top"></a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto" style="font-family: 'Graduate', cursive;">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#projects">Search</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Masthead-->
+    <header class="masthead">
+        <div class="container d-flex h-100 align-items-center">
+            <div class="mx-auto text-center">
+                <h1 class="mx-auto my-0" style="font-family: 'Graduate', cursive;">Hike  Seoul</h1>
+                <p>
+                <h2 class="text-white-50 mx-auto mt-2 mb-5" style="font-family: 'Graduate', cursive;">오늘 어디 갈까 고민될때?</h2>
+                </p>
+                <a class="btn btn-primary js-scroll-trigger" href="#about" style="font-family: 'Graduate', cursive;">Go!</a>
+            </div>
+        </div>
+    </header>
+    <!-- About-->
+    <section class="about-section text-center" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="text-white mb-4" style="font-family: 'Graduate', cursive;">원하시는 지역을 검색하세요</h2>
+                    <p class="text-white-50" style="font-family: 'Graduate', cursive;">
+                        이 웹사이트는 서울시 공공 API를 이용하여 제작되었으며 검색된 정보의 정확도는 보장되지 않습니다.
+                    <p>
+                        
+                        <a href="https://data.seoul.go.kr/dataList/OA-2501/S/1/datasetView.do" style="font-family: 'Graduate', cursive;">서울시 공공 API (클릭)</a>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- Projects-->
+    <section class="projects-section bg-light" id="projects">
+        <div class="container">
+
+            <h2 class="text-black mb-4 text-center">원하시는 지역/난이도를 선택하세요</h2>
+
+
+            <select class="browser-default custom-select text-center" name="gu_select" id="gu_select"
+                style="width: 40%; float:left" >
+                <option value="none">===선택===</option>
+                <option value="전체">전체 지역 선택</option>
+                <option value="종로구"> 종로구 </option>
+                <option value="중구"> 중구 </option>
+                <option value="용산구"> 용산구 </option>
+                <option value="성동구"> 성동구 </option>
+                <option value="광진구"> 광진구 </option>
+                <option value="동대문구"> 동대문구 </option>
+                <option value="중랑구"> 중랑구 </option>
+                <option value="성북구"> 성북구 </option>
+                <option value="강북구"> 강북구 </option>
+                <option value="도봉구"> 도봉구 </option>
+                <option value="노원구"> 노원구 </option>
+                <option value="은평구"> 은평구 </option>
+                <option value="서대문구"> 서대문구 </option>
+                <option value="마포구"> 마포구 </option>
+                <option value="양천구"> 양천구 </option>
+                <option value="강서구"> 강서구 </option>
+                <option value="구로구"> 구로구 </option>
+                <option value="금천구"> 금천구 </option>
+                <option value="영등포구"> 영등포구 </option>
+                <option value="동작구"> 동작구 </option>
+                <option value="관악구"> 관악구 </option>
+                <option value="서초구"> 서초구 </option>
+                <option value="강남구"> 강남구 </option>
+                <option value="송파구"> 송파구 </option>
+                <option value="강동구"> 강동구 </option>
+
+            </select>
+
+            <select class="browser-default custom-select" name="level" id="level" style="width: 40%; float:left">
+                <option value="none">===선택===</option>
+                <option value="전체">모든 난이도 선택</option>
+                <option value="1"> 1 </option>
+                <option value="2"> 2 </option>
+                <option value="3"> 3 </option>
+
+            </select>
+
+
+            <p>
+            <div class="mx-auto text-center">
+                <button class="btn btn-primary js-scroll-trigger" onclick="q1()" style="font-family: 'Graduate', cursive;">Update</button>
+            </div>
+            </p>
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td class="text-black mb-4 text-center">산책로 명</td>
+                        <td class="text-black mb-4 text-center">거리(시간)</td>
+                        <td class="text-black mb-4 text-center">난이도(1~3)</td>
+                    </tr>
+                </thead>
+                <tbody id="names-q1">
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Contact-->
+        <section class="contact-section bg-black" id=contact>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 mb-3 mb-md-0" style="font-family: 'Graduate', cursive;">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+                                <h4 class="text-uppercase m-0" style="font-family: 'Graduate', cursive;">Address</h4>
+                                <hr class="my-4" />
+                                <div class="small text-black-50">Sungkyunkwan-ro 15-14, Jongro, Seoul</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0" style="font-family: 'Graduate', cursive;">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-envelope text-primary mb-2"></i>
+                                <h4 class="text-uppercase m-0" style="font-family: 'Graduate', cursive;">Email</h4>
+                                <hr class="my-4" />
+                                <div class="small text-black-50"><a href="#!">megamanfresh@gmail.com</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0" style="font-family: 'Graduate', cursive;">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-mobile-alt text-primary mb-2"></i>
+                                <h4 class="text-uppercase m-0" style="font-family: 'Graduate', cursive;">Phone</h4>
+                                <hr class="my-4" />
+                                <div class="small text-black-50">+82 (10) 4728-6725</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="footer bg-black small text-center text-white-50">
+            <div class="container" style="font-family: 'Graduate', cursive;">Copyright © Fanboyseoul 2020</div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+</body>
+
+</html>

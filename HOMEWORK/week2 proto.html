@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        function rate() {
+            $.ajax({
+              type: "GET",
+              url: "https://api.manana.kr/exchange/rate.json",
+              data: {},
+              success: function (response) {
+                  for (let i=0; i<response.length; i++) {
+                    if (response[i]['name'] == 'USDKRW=X') {
+                      $('#exchange').text(response[i]['rate']);
+                      return;
+                    }
+                  }
+
+              }
+          })
+        }
+    </script>
+
+</head>
+
+<body>
+    <button onclick="rate()" type="button" id="exchange"> 환율조회 </button>
+</body>
+
+</html>
